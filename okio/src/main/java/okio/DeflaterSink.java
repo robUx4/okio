@@ -17,7 +17,6 @@ package okio;
 
 import java.io.IOException;
 import java.util.zip.Deflater;
-import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 
 import static okio.Util.checkOffsetAndCount;
 
@@ -80,7 +79,6 @@ public final class DeflaterSink implements Sink {
     }
   }
 
-  @IgnoreJRERequirement
   private void deflate(boolean syncFlush) throws IOException {
     Buffer buffer = sink.buffer();
     while (true) {
@@ -90,9 +88,9 @@ public final class DeflaterSink implements Sink {
       // Java 1.7, and is public (although with @hide) on Android since 2.3.
       // The @hide tag means that this code won't compile against the Android
       // 2.3 SDK, but it will run fine there.
-      int deflated = syncFlush
+      int deflated = /*syncFlush
           ? deflater.deflate(s.data, s.limit, Segment.SIZE - s.limit, Deflater.SYNC_FLUSH)
-          : deflater.deflate(s.data, s.limit, Segment.SIZE - s.limit);
+          :*/ deflater.deflate(s.data, s.limit, Segment.SIZE - s.limit);
 
       if (deflated > 0) {
         s.limit += deflated;
